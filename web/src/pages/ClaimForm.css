@@ -1,0 +1,104 @@
+.claim-form-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 420px;
+  margin: 0 auto 3rem;
+}
+
+.claim-form-block h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.claim-form-block .form-row {
+  margin-bottom: 1.25rem;
+}
+
+.claim-form-block .form-row input,
+.claim-form-block .form-row select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.claim-form-block .form-row input:focus,
+.claim-form-block .form-row select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn-block {
+  width: 100%;
+  padding: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.claim-result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.claim-result--success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.claim-result--warning {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.claim-result--error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.claim-result-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.claim-result-product {
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.claim-link {
+  display: inline-block;
+  padding: 0.5rem 0;
+  font-weight: 500;
+}
+
+
+
+.claim-result {
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+
+
+.claim-result-inner {
+  padding-top: 10px;
+}
+
+.claim-result-message {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.claim-result-inner {
+  transform: translateY(5px);
+  transition: transform 0.3s ease;
+}
+
+.claim-result.open .claim-result-inner {
+  transform: translateY(0);
+}
