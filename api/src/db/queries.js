@@ -98,7 +98,7 @@ export const createOrder = async ({ order_number, product_id, marketplace, raw_d
   const { rows } = await pool.query(
     `INSERT INTO orders (order_number, product_id, marketplace, raw_data)
      VALUES ($1, $2, $3, $4)
-     ON CONFLICT (order_number) DO UPDATE SET product_id = EXCLUDED.product_id, raw_data = EXCLUDED.raw_data
+     ON CONFLICT (order_number, marketplace) DO UPDATE SET product_id = EXCLUDED.product_id, raw_data = EXCLUDED.raw_data
      RETURNING *`,
     [order_number, product_id, marketplace, raw_data ? JSON.stringify(raw_data) : null]
   );

@@ -30,7 +30,6 @@ export async function syncOzon() {
     if (!orderNumber) continue;
 
     for (const product of p.products ?? []) {
-
       const productId = productMapping[product.sku];
       if (!productId) continue;
       
