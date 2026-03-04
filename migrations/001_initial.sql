@@ -31,5 +31,10 @@ CREATE TABLE IF NOT EXISTS activation_logs (
   activated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS sync_state (
+  marketplace TEXT PRIMARY KEY,
+  last_synced_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
 CREATE INDEX IF NOT EXISTS idx_orders_was_activated ON orders(was_activated);

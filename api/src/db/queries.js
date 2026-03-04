@@ -65,6 +65,22 @@ export const getOrderByNumber = async (orderNumber) => {
   return rows[0];
 };
 
+export const getOrderByNumberAndProduct = async (orderNumber, productId, marketplace) => {
+  const { rows } = await pool.query(
+    `
+    SELECT 1
+    FROM orders
+    WHERE order_number = $1
+      AND product_id = $2
+      AND marketplace = $3
+    LIMIT 1
+    `,
+    [orderNumber, productId, marketplace]
+  );
+
+  return rows[0] ?? null;
+};
+
 // Получение маппинга external_id -> product_id
 export async function getProductMapping(marketplace) {
   const res = await pool.query(
@@ -149,3 +165,25 @@ export const getActivationLogs = async (limit = 100) => {
   );
   return rows;
 };
+
+export async function getLastSync(marketplace) {
+  const row = await pool.query(
+    `SELECT last_synced_at FROM sync_state WHERE marketplace = $1`,
+    [marketplace]
+  );
+
+  if (!row.rows.length) return null;
+  return row.rows[0].last_synced_at;
+}
+
+export async function setLastSync(marketplace, date) {
+  await pool.query(
+    `
+    INSERT INTO sync_state (marketplace, last_synced_at)
+    VALUES ($1, $2)
+    ON CONFLICT (marketplace)
+    DO UPDATE SET last_synced_at = EXCLUDED.last_synced_at
+    `,
+    [marketplace, date]
+  );
+}
