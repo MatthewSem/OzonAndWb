@@ -1,4 +1,5 @@
 import pool from './pool.js';
+import { randomUUID } from 'crypto';
 
 // Products
 export const getProducts = async () => {
@@ -187,3 +188,76 @@ export async function setLastSync(marketplace, date) {
     [marketplace, date]
   );
 }
+
+// ===== Чаты (онлайн-чат «Задать вопрос») =====
+
+// Создать новый чат для сессии
+export const createChat = async (sessionId) => {
+  const id = randomUUID();
+  const { rows } = await pool.query(
+    `INSERT INTO chats (id, session_id, status)
+     VALUES ($1, $2, 'open')
+     RETURNING *`,
+    [id, sessionId]
+  );
+  return rows[0];
+};
+
+// Найти последний открытый чат по session_id
+export const getChatBySession = async (sessionId) => {
+  const { rows } = await pool.query(
+    `SELECT * FROM chats
+     WHERE session_id = $1
+       AND status = 'open'
+     ORDER BY created_at DESC
+     LIMIT 1`,
+    [sessionId]
+  );
+  return rows[0] || null;
+};
+
+export const getChatById = async (id) => {
+  const { rows } = await pool.query(
+    `SELECT * FROM chats WHERE id = $1`,
+    [id]
+  );
+  return rows[0] || null;
+};
+
+// Список чатов для админ-панели
+export const getChats = async () => {
+  const { rows } = await pool.query(
+    `SELECT c.id,
+            c.status,
+            c.created_at,
+            COUNT(m.id) AS messages_count
+     FROM chats c
+     LEFT JOIN messages m ON m.chat_id = c.id
+     GROUP BY c.id
+     ORDER BY c.created_at DESC`
+  );
+  return rows;
+};
+
+// Сообщения конкретного чата
+export const getMessagesByChat = async (chatId) => {
+  const { rows } = await pool.query(
+    `SELECT * FROM messages
+     WHERE chat_id = $1
+     ORDER BY created_at`,
+    [chatId]
+  );
+  return rows;
+};
+
+// Сохранение сообщения
+export const createMessageForChat = async ({ chatId, sender, message }) => {
+  const id = randomUUID();
+  const { rows } = await pool.query(
+    `INSERT INTO messages (id, chat_id, sender, message)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [id, chatId, sender, message]
+  );
+  return rows[0];
+};

@@ -14,6 +14,11 @@ import claimRouter from './routes/claim.js';
 import logsRouter from './routes/logs.js';
 
 import { syncOzon, syncWB } from './services/sync.js';
+import chatRouter from './routes/chat.js';
+
+import { createServer } from 'http';
+import { initWebSocket } from './services/ws.js';
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -30,6 +35,8 @@ app.use(session({
 
 app.use('/api/auth', authRouter);
 app.use('/api/claim', claimRouter);
+app.use('/api/chat', chatRouter);
+
 app.use('/api/products', requireAdmin, productsRouter);
 app.use('/api/orders', requireAdmin, ordersRouter);
 app.use('/api/activation-logs', requireAdmin, logsRouter);
@@ -65,7 +72,18 @@ startSync();
 //   console.log(`API работает на http://localhost:${PORT}`);
 // });
 
-app.listen(PORT, '0.0.0.0', () => {
+// app.listen(PORT, '0.0.0.0', () => {
+//   console.log(`API работает на http://localhost:${PORT}`);
+// });
+
+
+
+
+const server = createServer(app);
+
+initWebSocket(server);
+
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`API работает на http://localhost:${PORT}`);
 });
 

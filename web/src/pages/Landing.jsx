@@ -1,3 +1,4 @@
+import ChatWidget from './ChatWidget';
 import ClaimForm from './ClaimForm';
 import './Landing.css';
 import { useEffect, useState } from 'react';
@@ -68,6 +69,7 @@ export default function Landing() {
       </div>
 
       <div className='scroll-container'>
+        <ChatWidget/>
         <main className="landing-main" >
           <section id="top">
             <h1>Получите свой цифровой продукт</h1>

@@ -38,3 +38,25 @@ CREATE TABLE IF NOT EXISTS sync_state (
 
 CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number);
 CREATE INDEX IF NOT EXISTS idx_orders_was_activated ON orders(was_activated);
+
+-- Чаты (онлайн-виджет «Задать вопрос»)
+CREATE TABLE IF NOT EXISTS chats (
+  id UUID PRIMARY KEY,
+  session_id UUID NOT NULL,
+  status TEXT NOT NULL DEFAULT 'open',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- История сообщений чата
+CREATE TABLE IF NOT EXISTS messages (
+  id UUID PRIMARY KEY,
+  chat_id UUID NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+  sender TEXT NOT NULL, -- 'client' или 'operator'
+  message TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_chats_status ON chats(status);
+CREATE INDEX IF NOT EXISTS idx_chats_created_at ON chats(created_at);
+CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id);
+CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);

@@ -26,7 +26,7 @@ export async function syncOzon() {
   let newOrders = 0;
 
   for (const p of postings) {
-    const orderNumber = p.posting_number;
+    const orderNumber = p.order_number;
     if (!orderNumber) continue;
 
     for (const product of p.products ?? []) {

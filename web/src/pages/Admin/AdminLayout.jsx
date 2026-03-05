@@ -73,6 +73,7 @@ export default function AdminLayout() {
           <NavLink to="/admin" end>Обзор</NavLink>
           <NavLink to="/admin/products">Товары</NavLink>
           <NavLink to="/admin/orders">Заказы</NavLink>
+          <NavLink to="/admin/chats">Чаты</NavLink>
           <NavLink to="/admin/logs">Лог активаций</NavLink>
         </nav>
 

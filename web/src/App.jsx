@@ -4,6 +4,7 @@ import AdminLayout from './pages/Admin/AdminLayout';
 import Products from './pages/Admin/Products';
 import Orders from './pages/Admin/Orders';
 import Logs from './pages/Admin/Logs';
+import Chats from './pages/Admin/Chats';
 import { ScrollToTop } from './ScrollRestoration';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route index element={<AdminIndex />} />
         <Route path="products" element={<Products />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="chats" element={<Chats />} />
         <Route path="logs" element={<Logs />} />
       </Route>
     </Routes>
@@ -35,6 +37,10 @@ function AdminIndex() {
         <Link to="/admin/orders" className="admin-card">
           <h2>Заказы</h2>
           <p>Добавление и просмотр заказов</p>
+        </Link>
+        <Link to="/admin/chats" className="admin-card">
+          <h2>Чаты</h2>
+          <p>Онлайн-диалоги с посетителями сайта</p>
         </Link>
         <Link to="/admin/logs" className="admin-card">
           <h2>Лог активаций</h2>
