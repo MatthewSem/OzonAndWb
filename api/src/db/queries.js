@@ -234,6 +234,7 @@ export const getChats = async () => {
      FROM chats c
      LEFT JOIN messages m ON m.chat_id = c.id
      GROUP BY c.id
+     HAVING COUNT(m.id) > 0
      ORDER BY c.created_at DESC`
   );
   return rows;
