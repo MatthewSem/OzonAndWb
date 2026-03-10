@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 export default function Landing() {
   const [active, setActive] = useState('top')
   const [open, setOpen] = useState(false)
+  const [marketplace, setMarketplace] = useState("wb");
 
   useEffect(() => {
     const sections = document.querySelectorAll('section')
@@ -69,7 +70,7 @@ export default function Landing() {
       </div>
 
       <div className='scroll-container'>
-        <ChatWidget/>
+        <ChatWidget />
         <main className="landing-main" >
           <section id="top">
             <h1>Получите свой цифровой продукт</h1>
@@ -101,28 +102,73 @@ export default function Landing() {
             </div>
           </section>
 
-          <section className="landing-steps" id="steps">
-            <div className="step">
-              <span className="step-num">1</span>
-              <h3>Найдите номер заказа</h3>
-              <p>Он указан в письме после покупки или в личном кабинете маркетплейса</p>
-            </div>
-            <div className="step">
-              <span className="step-num">2</span>
-              <h3>Выберите маркетплейс</h3>
-              <p>Ozon или Wildberries — в зависимости от того, где вы оформили заказ</p>
-            </div>
-            <div className="step">
-              <span className="step-num">3</span>
-              <h3>Введите номер и получите ссылку</h3>
-              <p>После проверки заказа вы получите персональную ссылку на файл</p>
+          <section className="landing-steps-container" id="steps">
+
+            
+            {marketplace === "ozon" && (
+              <div className="landing-steps">
+
+                <div className="step">
+                  <span className="step-num">1</span>
+                  <h3>Найдите номер заказа в Ozon</h3>
+                  <p>Он указан на упаковке или в личном кабинете Ozon</p>
+                </div>
+
+                <div className="step">
+                  <span className="step-num">2</span>
+                  <h3>Введите номер заказа</h3>
+                  <p>Введите номер заказа Ozon в форму проверки</p>
+                </div>
+
+                <div className="step">
+                  <span className="step-num">3</span>
+                  <h3>Получите ссылку на файл</h3>
+                  <p>После проверки заказа появится ссылка на скачивание файла</p>
+                </div>
+
+              </div>
+            )}
+
+            {marketplace === "wb" && (
+              <div className="landing-steps">
+
+                <div className="step">
+                  <span className="step-num">1</span>
+                  <h3>Получить номер заказа Wildberries</h3>
+                  <p>Пришлите скриншот покупки в наш чат на сайте и ожидайте номер заказа</p>
+                </div>
+
+                <div className="step">
+                  <span className="step-num">2</span>
+                  <h3>Введите номер заказа</h3>
+                  <p>Введите номер заказа Wildberries в форму проверки</p>
+                </div>
+
+                <div className="step">
+                  <span className="step-num">3</span>
+                  <h3>Получите ссылку на файл</h3>
+                  <p>После проверки заказа появится ссылка на скачивание файла</p>
+                </div>
+
+              </div>
+            )}
+
+            <div className="marketplace-switch">
+              <button
+                className={`marketplace-badge wb ${marketplace === "wb" ? "active" : ""}`}
+                onClick={() => setMarketplace("wb")}
+              >
+                Wildberries
+              </button>
+
+              <button
+                className={`marketplace-badge ozon ${marketplace === "ozon" ? "active" : ""}`}
+                onClick={() => setMarketplace("ozon")}
+              >
+                Ozon
+              </button>
             </div>
           </section>
-
-          <div className="marketplaces">
-            <div className="marketplace-badge ozon">Ozon</div>
-            <div className="marketplace-badge wb">Wildberries</div>
-          </div>
         </main>
 
         <footer className="landing-footer">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './Orders.css';
+import { Send, Paperclip } from "lucide-react";
 
 const API = '/api';
 
@@ -286,27 +287,71 @@ export default function Chats() {
           <div ref={messagesEndRef} />
         </div>
 
-        <form className="chat-input" onSubmit={sendMessage}>
-          <textarea
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            rows={2}
-            placeholder="Ответ оператора…"
-          />
-          <div className="chat-input-actions">
-            <label className="file-label">
-              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-              📎
-            </label>
-            {imagePreview && (
-              <div className="image-preview">
+        <div className="admin-chat-footer">
+
+          {imagePreview && (
+            <div className="admin-chat-preview">
+              <div className="admin-chat-preview-wrapper">
                 <img src={imagePreview} alt="Превью" />
-                <div className="remove-btn" onClick={() => { setImagePreview(null); setImageFile(null); }}>×</div>
+
+                <button
+                  className="admin-chat-remove"
+                  onClick={() => {
+                    setImagePreview(null);
+                    setImageFile(null);
+                  }}
+                >
+                  ×
+                </button>
               </div>
-            )}
-            <button type="submit" disabled={sending || (!messageInput.trim() && !imagePreview)}>Отправить</button>
-          </div>
-        </form>
+            </div>
+          )}
+
+          <form className="admin-chat-input" onSubmit={sendMessage}>
+
+            <textarea
+              className="admin-chat-textarea"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              // onChange={(e) => {
+              //   setMessageInput(e.target.value)
+              //   e.target.style.height = 'auto'
+              //   e.target.style.height = e.target.scrollHeight + 'px'
+              // }}
+              rows={2}
+              placeholder="Ответ операторa…"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  sendMessage(e)
+                }
+              }}
+            />
+
+            <div className="admin-chat-actions">
+
+              <label className="admin-chat-file">
+                <Paperclip size={18} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  hidden
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="admin-chat-send"
+                disabled={sending || (!messageInput.trim() && !imagePreview)}
+              >
+                <Send size={18} />
+              </button>
+
+            </div>
+
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./ChatWidget.css";
+import { Send, Paperclip } from "lucide-react";
 
 const API = "/api";
 
@@ -13,6 +14,9 @@ export default function ChatWidget() {
   const [connected, setConnected] = useState(false);
   const [canSend, setCanSend] = useState(true);
   const [unread, setUnread] = useState(0);
+
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [sessionId, setSessionId] = useState(() => {
     return localStorage.getItem("chat_session") || null;
@@ -109,31 +113,60 @@ export default function ChatWidget() {
   }, [sessionId]);
 
   const sendMessage = () => {
-    if (!input.trim() || !canSend) return;
+    if ((!input.trim() && !imagePreview) || !canSend) return;
 
     if (wsRef.current?.readyState !== WebSocket.OPEN) {
       console.log("WS not connected");
       return;
     }
 
-    const localMessage = {
-      sender: "client",
-      message: input,
-      pending: true,
-    };
+    const payloads = [];
 
-    setMessages((prev) => [...prev, localMessage]);
+    if (input.trim()) payloads.push(input);
+    if (imagePreview) payloads.push(imagePreview);
 
-    wsRef.current.send(
-      JSON.stringify({
-        type: "message",
-        message: input,
-      })
-    );
+    payloads.forEach((payload) => {
+      const localMessage = {
+        sender: "client",
+        message: payload,
+        pending: true,
+      };
+
+      setMessages((prev) => [...prev, localMessage]);
+
+      wsRef.current.send(
+        JSON.stringify({
+          type: "message",
+          message: payload,
+        })
+      );
+    });
 
     setInput("");
+    setImageFile(null);
+    setImagePreview(null);
+
     setCanSend(false);
     setTimeout(() => setCanSend(true), 1000);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setImageFile(null);
+      setImagePreview(null);
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      alert('Можно прикреплять только изображения');
+      return;
+    }
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -173,10 +206,10 @@ export default function ChatWidget() {
               <div
                 key={m.id || i}
                 className={`chat-message ${m.sender === "operator"
-                    ? "operator"
-                    : m.sender === "client"
-                      ? "client"
-                      : m.sender || ""
+                  ? "operator"
+                  : m.sender === "client"
+                    ? "client"
+                    : m.sender || ""
                   } ${m.pending ? "pending" : ""}`}
               >
                 {typeof m.message === "string" &&
@@ -194,7 +227,34 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="chat-input">
+          {imagePreview && (
+            <div className="chat-image-preview-client">
+              <div className="image-wrapper">
+                <img src={imagePreview} alt="preview" />
+                <div
+                  className="remove-btn"
+                  onClick={() => {
+                    setImagePreview(null);
+                    setImageFile(null);
+                  }}
+                >
+                  ×
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="chat-input-client">
+            <label className="chat-file">
+              <Paperclip size={18} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                hidden
+              />
+            </label>
+
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -203,7 +263,10 @@ export default function ChatWidget() {
               }}
               placeholder="Ваш вопрос..."
             />
-            <button onClick={sendMessage}>Отправить</button>
+
+            <button className="chat-send" onClick={sendMessage}>
+              <Send size={18} />
+            </button>
           </div>
         </div>
       )}

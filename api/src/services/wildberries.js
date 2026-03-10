@@ -30,6 +30,9 @@ export async function fetchOrders(dateFrom) {
 
     const data = await res.json();
 
+    
+
+
     if (!data.orders) {
       console.log("WB ERROR:", data);
       break;
@@ -38,6 +41,7 @@ export async function fetchOrders(dateFrom) {
     all.push(...data.orders);
 
     console.log("WB batch:", data.orders.length, "next:", data.next);
+
 
     // 🔴 Условие выхода №1 — данных меньше лимита
     if (data.orders.length < limit) break;
