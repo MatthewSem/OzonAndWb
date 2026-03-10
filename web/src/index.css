@@ -42,3 +42,40 @@ a:hover {
 input, select, textarea, button {
   font-family: inherit;
 }
+
+/* ======= Глобальное решение для всех интерактивных элементов ======= */
+
+/* Список всех интерактивных элементов, включая div с tabindex */
+button,
+input,
+select,
+textarea,
+a,
+summary,
+label,
+[tabindex]:not([tabindex="-1"]) {
+  outline: none; /* убирает ugly outline */
+  -webkit-tap-highlight-color: transparent; /* убирает синий/серый flash на iOS/Android */
+  user-select: none; /* предотвращает случайное выделение текста на touch */
+}
+
+/* Можно добавить hover/active эффекты отдельно при необходимости */
+button:active,
+a:active,
+[tabindex]:active {
+  transform: scale(0.98); /* приятный отклик на touch */
+}
+
+/* Для клавиатуры можно оставить видимый фокус, если хотите */
+@media (hover: hover) and (pointer: fine) {
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--accent); /* красивый фокус для клавиатуры */
+    outline-offset: 2px;
+  }
+}
