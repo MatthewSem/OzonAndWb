@@ -208,6 +208,7 @@
 
 .btn-primary:hover {
   background: var(--accent-hover);
+  color: white;
 }
 
 .btn-secondary {

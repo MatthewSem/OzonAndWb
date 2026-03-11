@@ -189,7 +189,7 @@ export async function setLastSync(marketplace, date) {
   );
 }
 
-// ===== Чаты (онлайн-чат «Задать вопрос») =====
+// ===== Чаты (онлайн-чат «ТЕХПОДДЕРЖКА») =====
 
 // Создать новый чат для сессии
 export const createChat = async (sessionId) => {

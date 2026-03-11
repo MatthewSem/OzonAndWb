@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./ChatWidget.css";
-import { Send, Paperclip } from "lucide-react";
+import { Send, Paperclip, MessageCircle } from "lucide-react";
 
 const API = "/api";
 
-export default function ChatWidget() {
+export default function ChatWidget({claimAttempts}) {
   const wsRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -28,8 +28,23 @@ export default function ChatWidget() {
   };
 
   useEffect(() => {
+    if (claimAttempts > 1) {
+      setOpen(true);
+
+      setMessages(prev => [
+      ...prev,
+      {
+        sender: "operator",
+        message: "Мы не смогли найти заказ автоматически. Пришлите скриншот покупки.",
+      }
+    ]);
+    }
+  }, [claimAttempts]);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  
 
   useEffect(() => {
     function connect() {
@@ -179,7 +194,7 @@ export default function ChatWidget() {
             setUnread(0);
           }}
         >
-          <span>💬</span>
+          <MessageCircle size={28} />
           {unread > 0 && (
             <span className="chat-unread">
               {unread > 9 ? "9+" : unread}
@@ -191,7 +206,7 @@ export default function ChatWidget() {
         <div className="chat-window">
           <div className="chat-header">
             <div className="chat-header-head">
-              <span>Задать вопрос</span>
+              <span>Техподдержка</span>
               <div
                 className={`chat-status ${connected ? "online" : "offline"}`}
               ></div>

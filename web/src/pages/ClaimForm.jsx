@@ -3,7 +3,7 @@ import './ClaimForm.css';
 
 const API = '/api';
 
-export default function ClaimForm() {
+export default function ClaimForm({ setClaimAttempts }) {
   const [marketplace, setMarketplace] = useState('ozon');
   const [orderNumber, setOrderNumber] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,9 +23,6 @@ export default function ClaimForm() {
 
     setLoading(true);
 
-    // Временно сохраняем старый результат, чтобы блок не исчезал мгновенно
-    const previousResult = result;
-
     // Очищаем результат сразу не нужно, просто можно слегка затушевать
     setResult(null);
 
@@ -40,7 +37,23 @@ export default function ClaimForm() {
       // Добавляем искусственную задержку
       setTimeout(() => {
         if (!check.found) {
-          setResult({ type: 'error', message: 'Заказ не найден. Проверьте номер и попробуйте снова.' });
+          const attempts = Number(localStorage.getItem('claim_attempts') || 0) + 1;
+          localStorage.setItem('claim_attempts', attempts);
+          if (setClaimAttempts) {
+            setClaimAttempts(attempts);
+          }
+          if (attempts >= 2) {
+            setResult({
+              type: 'warning',
+              message: 'Не удалось найти заказ автоматически. Пришлите скриншот заказа в чат поддержки — мы проверим его вручную. Ответ может занять некоторое время.'
+            });
+          } else {
+            setResult({
+              type: 'error',
+              message: 'Заказ не найден. Проверьте номер заказа и попробуйте снова.'
+            });
+          }
+
           setLoading(false);
           return;
         }
@@ -75,6 +88,7 @@ export default function ClaimForm() {
               };
               setResult(successData);
               localStorage.setItem('claim_access', JSON.stringify(successData));
+              localStorage.removeItem('claim_attempts');
             }
             setLoading(false);
           });
@@ -96,7 +110,7 @@ export default function ClaimForm() {
           <label>Маркетплейс</label>
           <select value={marketplace} onChange={(e) => setMarketplace(e.target.value)}>
             <option value="ozon">Ozon</option>
-            <option value="wildberries">Wildberries</option>
+            {/* <option value="wildberries">Wildberries</option> */}
           </select>
         </div>
         <div className="form-row">
