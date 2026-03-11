@@ -257,3 +257,26 @@
   cursor: pointer;
 }
 
+
+/* Адаптация для телефонов */
+@media (max-width: 480px) {
+  .chat-widget {
+    bottom: 16px; /* чуть выше от края */
+    right: 16px;
+  }
+
+  .chat-button {
+    width: 56px;  /* было 70px */
+    height: 56px; /* было 70px */
+  }
+
+  .chat-window {
+    width: 365px;  /* было 380px */
+    height: 505px; /* было 520px */
+    max-width: 90vw;
+  }
+
+  .chat-image-preview-client img {
+    max-width: 50px; /* уменьшили превью изображений */
+  }
+}
