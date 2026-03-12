@@ -362,6 +362,9 @@ section {
   font-weight: 600;
   background: var(--surface);
   border: 1px solid var(--border);
+
+  outline: none;           /* отключаем стандартный focus */
+  user-select: none;
 }
 
 
