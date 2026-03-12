@@ -4,7 +4,7 @@ import { Send, Paperclip, MessageCircle } from "lucide-react";
 
 const API = "/api";
 
-export default function ChatWidget({claimAttempts}) {
+export default function ChatWidget({ claimAttempts }) {
   const wsRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -32,19 +32,19 @@ export default function ChatWidget({claimAttempts}) {
       setOpen(true);
 
       setMessages(prev => [
-      ...prev,
-      {
-        sender: "operator",
-        message: "Мы не смогли найти заказ автоматически. Пришлите скриншот покупки.",
-      }
-    ]);
+        ...prev,
+        {
+          sender: "operator",
+          message: "Мы не смогли найти заказ автоматически. Пришлите скриншот покупки.",
+        }
+      ]);
     }
   }, [claimAttempts]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  
+
 
   useEffect(() => {
     function connect() {
@@ -187,19 +187,22 @@ export default function ChatWidget({claimAttempts}) {
   return (
     <div className="chat-widget">
       {!open && (
-        <div
-          className="chat-button"
-          onClick={() => {
-            setOpen(true);
-            setUnread(0);
-          }}
-        >
-          <MessageCircle size={28} />
-          {unread > 0 && (
-            <span className="chat-unread">
-              {unread > 9 ? "9+" : unread}
-            </span>
-          )}
+        <div className="chat-button-wrapper" onClick={() => {
+          setOpen(true);
+          setUnread(0);
+        }}>
+          <div
+            className="chat-button"
+          >
+            <MessageCircle size={28} />
+
+            {unread > 0 && (
+              <span className="chat-unread">
+                {unread > 9 ? "9+" : unread}
+              </span>
+            )}
+          </div>
+          <span className="chat-label">Техподдержка</span>
         </div>
       )}
       {open && (

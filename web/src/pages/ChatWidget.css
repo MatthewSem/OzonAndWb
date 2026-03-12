@@ -6,26 +6,49 @@
   font-family: 'Manrope', sans-serif;
 }
 
+.chat-button-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* расстояние между кругом и подписью */
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Круг с иконкой */
 .chat-button {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   background: var(--accent);
   color: #fff;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  cursor: pointer;
   position: relative;
-
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  transition: all 0.3s ease;
 }
 
 .chat-button:hover {
   transform: scale(1.08);
 }
+
+/* Подпись снизу */
+.chat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .chat-unread {
   position: absolute;
@@ -45,15 +68,6 @@
 }
 
 .chat-window {
-  /* width: 320px;
-  max-width: 100vw;
-  height: 420px;
-  background: var(--surface);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); */
   width: 380px;
   max-width: 95vw;
   height: 520px;
@@ -256,6 +270,8 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+
 
 
 /* Адаптация для телефонов */

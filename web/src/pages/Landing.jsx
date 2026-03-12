@@ -8,6 +8,7 @@ export default function Landing() {
   const [open, setOpen] = useState(false)
   const [marketplace, setMarketplace] = useState("ozon");
   const [claimAttempts, setClaimAttempts] = useState(0);
+  const [activeMarketplace, setActiveMarketplace] = useState(null);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section')
@@ -30,7 +31,7 @@ export default function Landing() {
     return () => observer.disconnect()
 
   }, [])
-  
+
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : 'auto'
@@ -72,7 +73,7 @@ export default function Landing() {
       </div>
 
       <div className='scroll-container'>
-        <ChatWidget claimAttempts={claimAttempts}/>
+        <ChatWidget claimAttempts={claimAttempts} />
         <main className="landing-main" >
           <section id="top">
             <h1>Получите свой цифровой продукт</h1>
@@ -82,13 +83,13 @@ export default function Landing() {
             </p>
 
 
-            <ClaimForm setClaimAttempts={setClaimAttempts}/>
+            <ClaimForm setClaimAttempts={setClaimAttempts} />
           </section>
 
           <section className="landing-steps-container" id="steps">
 
-            
-            {marketplace === "ozon" && (
+
+            {/* {marketplace === "ozon" && (
               <div className="landing-steps">
 
                 <div className="step">
@@ -149,6 +150,75 @@ export default function Landing() {
               >
                 Wildberries
               </button>
+            </div> */}
+
+
+
+            <h2 className="steps-title">Инструкция</h2>
+
+            <div className="marketplace-accordion">
+
+              {/* Ozon */}
+              <div className={`marketplace-card ${activeMarketplace === "ozon" ? "open" : ""}`}>
+                <div
+                  className="marketplace-header"
+                  onClick={() => setActiveMarketplace(activeMarketplace === "ozon" ? null : "ozon")}
+                >
+                  Ozon
+                </div>
+                {activeMarketplace === "ozon" && (
+                  <div className="landing-steps">
+                    <div className="step">
+                      <span className="step-num">1</span>
+                      <h3>Найдите номер заказа Ozon</h3>
+                      <p>Откройте в личном кабинете раздел «Заказы». Номер заказа указан в правом верхнем углу.</p>
+                    </div>
+
+                    <div className="step">
+                      <span className="step-num">2</span>
+                      <h3>Введите номер заказа</h3>
+                      <p>Введите номер заказа Ozon в форму проверки.</p>
+                    </div>
+
+                    <div className="step">
+                      <span className="step-num">3</span>
+                      <h3>Получите ссылку на файл</h3>
+                      <p>После проверки заказа появится ссылка на скачивание файла.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Wildberries */}
+              <div className={`marketplace-card ${activeMarketplace === "wb" ? "open" : ""}`}>
+                <div
+                  className="marketplace-header"
+                  onClick={() => setActiveMarketplace(activeMarketplace === "wb" ? null : "wb")}
+                >
+                  Wildberries
+                </div>
+                {activeMarketplace === "wb" && (
+                  <div className="landing-steps">
+                    <div className="step">
+                      <span className="step-num">1</span>
+                      <h3>Отправьте скриншот покупки</h3>
+                      <p>Пришлите скриншот покупки в чат техподдержки. На скриншоте должна быть видна дата выкупа (раздел «Покупки»).</p>
+                    </div>
+
+                    <div className="step">
+                      <span className="step-num">2</span>
+                      <h3>Дождитесь проверки</h3>
+                      <p>Поддержка проверит покупку и подготовит ссылку на файл.</p>
+                    </div>
+
+                    <div className="step">
+                      <span className="step-num">3</span>
+                      <h3>Получите ссылку на файл</h3>
+                      <p>После проверки поддержка отправит вам ссылку на скачивание файла</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
 

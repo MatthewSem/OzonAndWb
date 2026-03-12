@@ -80,7 +80,7 @@ html {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin-bottom: 2rem;
+  background: var(--bg);
   text-align: left;
 }
 
@@ -331,4 +331,42 @@ section {
   }
 }
 
+
+
+
+
+.steps-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.marketplace-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.marketplace-card {
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.marketplace-header {
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+
+.marketplace-card.open .landing-steps {
+  max-height: 1000px; /* достаточно большая высота для всех шагов */
+  padding: 16px;
+}
 
